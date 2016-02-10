@@ -47,7 +47,7 @@ int main() {
 	mb3 = mb2 = mb1;
 	cout << mb3 << endl << endl;
 
-	cout << "Press any key to continue . . ." << endl;
+	cout << "\nPress any key to continue . . ." << endl;
 	cin.get();
 }
 
