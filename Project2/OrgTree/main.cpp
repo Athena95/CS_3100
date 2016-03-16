@@ -13,14 +13,16 @@ int main() {
 
 		if (i == 0) {
 			std::cout << "Head honcho" <<
-				employees._tree[i]._name << "\n" << std::endl;
+				employees.tree_[i].name_ << "\n" << std::endl;
 			continue;
 		}
+
+// TODO- remove access to tree-only for temporary testing purposes
 		std::cout << "Employee: " <<
-			employees._tree[i]._name << std::endl;
+			employees.tree_[i].name_ << std::endl;
 
 		std::cout << "Boss: " <<
-			employees._tree[employees._tree[i]._parent]._name << "\n" << std::endl;
+			employees.tree_[employees.tree_[i].parent_].name_ << "\n" << std::endl;
 	}
 
 	std::cout << "Press enter to continue . . . " << std::endl;

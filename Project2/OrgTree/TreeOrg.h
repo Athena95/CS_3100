@@ -26,11 +26,9 @@ public:
 
 private:
 
-	
-	size_t _size, _capacity, _treeRoot;
-
+	size_t size_, capacity_, treeRoot_;
 	static const size_t INITIAL_CAPACITY = 50;
 
 	TreeNode* resize();
-	TREENODEPTR findChild(TREENODEPTR node);
+	TREENODEPTR findRightmostChild(TREENODEPTR node, TREENODEPTR targetnode);
 };

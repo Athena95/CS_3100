@@ -16,19 +16,19 @@ void TreeOrg::addRoot(const std::string& title, const std::string& name) {
 }
 
 int TreeOrg::getSize() {
-	return _size;
+	return size_;
 }
 
 TREENODEPTR TreeOrg::getRoot() {
-	return _treeRoot;
+	return treeRoot_;
 }
 
 TREENODEPTR TreeOrg::leftmostChild(TREENODEPTR node) {
-	return _tree[node]._leftmostChild;
+	return tree_[node].leftmostChild_;
 }
 
 TREENODEPTR TreeOrg::rightSibling(TREENODEPTR node) {
-	return _tree[node]._rightSibling;
+	return tree_[node].rightSibling_;
 }
 
 void TreeOrg::printSubTree(TREENODEPTR subTreeNode) {
@@ -37,8 +37,8 @@ void TreeOrg::printSubTree(TREENODEPTR subTreeNode) {
 }
 
 TREENODEPTR TreeOrg::find(const std::string& title) {
-	for (size_t i = 0; i < _size; ++i) {
-		if (_tree[i]._title == title) {
+	for (size_t i = 0; i < size_; ++i) {
+		if (tree_[i].title_ == title) {
 			return i;
 		}
 	}
@@ -63,19 +63,19 @@ bool TreeOrg::read(const std::string& filename) {
 				getline(ss, title, ',');
 				getline(ss, name);
 
-				hire(_tree[_size - 1]._parent, title, name);
+				hire(tree_[size_ - 1].parent_, title, name);
 				endSubtree = false;
 			}
 			else {
-				hire(_size - 1, title, name);
+				hire(size_ - 1, title, name);
 			}
 		}
 		else if (title == ")") {
-			if (_size != 0) {
+			if (size_ != 0) {
 				endSubtree = true;
 			}
 		}
-		else if (_size == 0) {
+		else if (size_ == 0) {
 			addRoot(title, name);
 		}
 	}
@@ -90,46 +90,46 @@ void TreeOrg::write(const std::string& filename) {
 
 void TreeOrg::hire(TREENODEPTR parentNode, const std::string& newTitle, const std::string& newName) {
 
-	TREENODEPTR nodePtr = _size;
+	TREENODEPTR nodePtr = size_;
 	TreeNode node(newName, newTitle);
 	node.setPointers(parentNode, TREENULLPTR, TREENULLPTR);
-	_tree[nodePtr] = node;
+	tree_[nodePtr] = node;
 
-	++_size;
+	++size_;
 
 	// resize as soon as capacity is reached
-	if (_size == _capacity) {
-		_tree = resize();
+	if (size_ == capacity_) {
+		tree_ = resize();
 	}
 	
 	if (parentNode == TREENULLPTR) {
 		if (nodePtr != 0) {
-			_tree[_treeRoot]._parent = nodePtr;
-			node._leftmostChild = _treeRoot;
+			tree_[treeRoot_].parent_ = nodePtr;
+			node.leftmostChild_ = treeRoot_;
 		}
-		_treeRoot = nodePtr;
+		treeRoot_ = nodePtr;
 	}
-	else if (_tree[parentNode]._leftmostChild == TREENULLPTR) {
-		_tree[parentNode]._leftmostChild = nodePtr;
+	else if (tree_[parentNode].leftmostChild_ == TREENULLPTR) {
+		tree_[parentNode].leftmostChild_ = nodePtr;
 	}
 	else {
-		TREENODEPTR lastChild = findChild(parentNode);
-		_tree[lastChild]._rightSibling = nodePtr;	
+		TREENODEPTR lastChild = findRightmostChild(tree_[parentNode].leftmostChild_, TREENULLPTR);
+		tree_[lastChild].rightSibling_ = nodePtr;	
 	}
 }
 
 bool TreeOrg::fire(const std::string& formerTitle) {
-	if (_tree[_treeRoot]._title == formerTitle) {
+	if (tree_[treeRoot_].title_ == formerTitle) {
 		std::cerr << "You can't fire the boss!" << std::endl;
 		return false;
 	}
-
-	for (size_t i = 0; i < _size; ++i) {
-		if (_tree[i]._title == formerTitle) {
+	
+	for (size_t i = 0; i < size_; ++i) {
+		if (tree_[i].title_ == formerTitle) {
 			
 			_tree[_tree[i]._parent]._leftmostChild = _tree[i]._rightSibling;
 
-			--_size;
+			--size_;
 			return true;
 		}
 	}
@@ -139,19 +139,20 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 }
 
 TreeNode* TreeOrg::resize() {
-	_capacity *= 2;
-	TreeNode* tree = new TreeNode[_capacity];
+	capacity_ *= 2;
+	TreeNode* tree = new TreeNode[capacity_];
 
-	for (size_t i = 0; i < _size; ++i) {
-		tree[i] = _tree[i];
+	for (size_t i = 0; i < size_; ++i) {
+		tree[i] = tree_[i];
 	}
 
-	delete[](_tree);
+	delete[](tree_);
 	return tree;
 }
 
 TREENODEPTR TreeOrg::findChild(TREENODEPTR node) {
 	if (_tree[node]._rightSibling == TREENULLPTR) {
+	if (tree_[node].rightSibling_ == targetnode) {
 		return node;
 	}
 	else {

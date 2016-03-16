@@ -7,35 +7,35 @@
 class TreeNode {
 public:
 
-	TreeNode() : _name(""), _title("") {
-		TreeNode(_name, _title);
+	TreeNode() : name_(""), title_("") {
+		TreeNode(name_, title_);
 	}
 
-	TreeNode(const std::string& name, const std::string& title) : _name(name), _title(title) {
+	TreeNode(const std::string& name, const std::string& title) : name_(name), title_(title) {
 		setPointers(TREENULLPTR, TREENULLPTR, TREENULLPTR);
 	}
 
 	~TreeNode() {}
 
 	void operator=(const TreeNode& other) {
-		_name = other._name;
-		_title = other._title;
-		_parent = other._parent;
-		_leftmostChild = other._leftmostChild;
-		_rightSibling = other._rightSibling;
+		name_ = other.name_;
+		title_ = other.title_;
+		parent_ = other.parent_;
+		leftmostChild_ = other.leftmostChild_;
+		rightSibling_ = other.rightSibling_;
 	}
 
 	void setPointers(TREENODEPTR p, TREENODEPTR lc, TREENODEPTR rs) {
-		_parent = p;
-		_leftmostChild = lc;
-		_rightSibling = rs;
+		parent_ = p;
+		leftmostChild_ = lc;
+		rightSibling_ = rs;
 	}
 
-	bool isEmpty() { return _name == ""; };
+	bool isEmpty() { return name_ == ""; };
 
 	// Data
-	std::string _name, _title;
+	std::string name_, title_;
 
 	// Pointers
-	TREENODEPTR _parent, _leftmostChild, _rightSibling;
+	TREENODEPTR parent_, leftmostChild_, rightSibling_;
 };
