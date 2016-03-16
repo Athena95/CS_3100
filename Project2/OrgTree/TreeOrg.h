@@ -21,8 +21,7 @@ public:
 	void hire(TREENODEPTR node, const std::string& newTitle, const std::string& newName);
 	bool fire(const std::string& formerTitle);
 
-// TODO- make private after testing! - Derek
-	TreeNode* _tree;
+	TreeNode* tree_;
 
 private:
 
