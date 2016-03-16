@@ -3,12 +3,12 @@
 #include <sstream>
 #include <iostream>
 
-TreeOrg::TreeOrg() : _size( 0 ), _capacity( INITIAL_CAPACITY ), _treeRoot( 0 ) {
-	_tree = new TreeNode[_capacity];
+TreeOrg::TreeOrg() : size_( 0 ), capacity_( INITIAL_CAPACITY ), treeRoot_( 0 ) {
+	tree_ = new TreeNode[capacity_];
 }
 
 TreeOrg::~TreeOrg() {
-	delete[](_tree);
+	delete[](tree_);
 }
 
 void TreeOrg::addRoot(const std::string& title, const std::string& name) {
@@ -127,7 +127,23 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 	for (size_t i = 0; i < size_; ++i) {
 		if (tree_[i].title_ == formerTitle) {
 			
-			_tree[_tree[i]._parent]._leftmostChild = _tree[i]._rightSibling;
+			// If not the only child...
+			if (tree_[tree_[i].parent_].leftmostChild_ != i) {
+
+				// Get child before the guy we're firing
+				// Set his right sibling to the guy we're firing's right sibling
+				TREENODEPTR childBeforeNode = findRightmostChild(tree_[tree_[i].parent_].leftmostChild_, i);
+				tree_[childBeforeNode].rightSibling_ = tree_[i].rightSibling_;
+
+			}
+			// Set the parent's leftmostChild to the first child of the fired guy
+			else {
+				tree_[tree_[i].parent_].leftmostChild_ = tree_[i].leftmostChild_;
+			}
+
+// TODO- we don't want wasted space! 
+// Move last guy in the array to the empty spot, and fix pointers accordingly...
+// Could get tricky...
 
 			--size_;
 			return true;
@@ -150,12 +166,11 @@ TreeNode* TreeOrg::resize() {
 	return tree;
 }
 
-TREENODEPTR TreeOrg::findChild(TREENODEPTR node) {
-	if (_tree[node]._rightSibling == TREENULLPTR) {
+TREENODEPTR TreeOrg::findRightmostChild(TREENODEPTR node, TREENODEPTR targetnode) {
 	if (tree_[node].rightSibling_ == targetnode) {
 		return node;
 	}
 	else {
-		return findChild(_tree[node]._leftmostChild);
+		return findRightmostChild(tree_[node].rightSibling_, targetnode);
 	}
 }
