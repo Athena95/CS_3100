@@ -15,8 +15,6 @@ public:
 		setPointers(TREENULLPTR, TREENULLPTR, TREENULLPTR);
 	}
 
-	~TreeNode() {}
-
 	void operator=(const TreeNode& other) {
 		name_ = other.name_;
 		title_ = other.title_;
