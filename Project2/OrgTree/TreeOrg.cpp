@@ -125,23 +125,14 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 	for (size_t i = 0; i < size_; ++i) {
 		if (tree_[i].title_ == formerTitle) {
 			
-			// If not the only child...
-			if (tree_[tree_[i].parent_].leftmostChild_ != i) {
+			// Get child before the guy we're firing
+			// Set his right sibling to the guy we're firing's right sibling
+			TREENODEPTR childBeforeNode = findChild(tree_[tree_[i].parent_].leftmostChild_, i);
+			tree_[childBeforeNode].rightSibling_ = tree_[i].rightSibling_;
 
-				// Get child before the guy we're firing
-				// Set his right sibling to the guy we're firing's right sibling
-				TREENODEPTR childBeforeNode = findRightmostChild(tree_[tree_[i].parent_].leftmostChild_, i);
-				tree_[childBeforeNode].rightSibling_ = tree_[i].rightSibling_;
-
-			}
-			// Set the parent's leftmostChild to the first child of the fired guy
-			else {
-				tree_[tree_[i].parent_].leftmostChild_ = tree_[i].leftmostChild_;
-			}
-
-// TODO- we don't want wasted space! 
-// Move last guy in the array to the empty spot, and fix pointers accordingly...
-// Could get tricky...
+			// TODO
+			// Set left child of deleted guy to last child of his parent
+			// Set all children's parents to guy's parent
 
 			--size_;
 			return true;
