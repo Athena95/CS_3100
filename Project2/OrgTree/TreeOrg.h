@@ -21,11 +21,11 @@ public:
 	void hire(TREENODEPTR node, const std::string& newTitle, const std::string& newName);
 	bool fire(const std::string& formerTitle);
 
-	TreeNode* tree_;
-
 private:
 
+	TreeNode* tree_;
 	size_t size_, capacity_, treeRoot_;
+
 	static const size_t INITIAL_CAPACITY = 50;
 
 	TreeNode* resize();
