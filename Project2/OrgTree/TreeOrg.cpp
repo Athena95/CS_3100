@@ -111,7 +111,7 @@ void TreeOrg::hire(TREENODEPTR parentNode, const std::string& newTitle, const st
 		tree_[parentNode].leftmostChild_ = nodePtr;
 	}
 	else {
-		TREENODEPTR lastChild = findRightmostChild(tree_[parentNode].leftmostChild_, TREENULLPTR);
+		TREENODEPTR lastChild = findChild(tree_[parentNode].leftmostChild_, TREENULLPTR);
 		tree_[lastChild].rightSibling_ = nodePtr;	
 	}
 }
@@ -164,11 +164,11 @@ TreeNode* TreeOrg::resize() {
 	return tree;
 }
 
-TREENODEPTR TreeOrg::findRightmostChild(TREENODEPTR node, TREENODEPTR targetnode) {
+TREENODEPTR TreeOrg::findChild(TREENODEPTR node, TREENODEPTR targetnode) {
 	if (tree_[node].rightSibling_ == targetnode) {
 		return node;
 	}
 	else {
-		return findRightmostChild(tree_[node].rightSibling_, targetnode);
+		return findChild(tree_[node].rightSibling_, targetnode);
 	}
 }
