@@ -32,7 +32,7 @@ TREENODEPTR TreeOrg::rightSibling(TREENODEPTR node) {
 }
 
 void TreeOrg::printSubTree(TREENODEPTR subTreeNode) {
-	// TODO- recursive function
+// TODO- print le peoples
 	std::cout << "This prints people!" << std::endl;
 }
 
@@ -83,7 +83,7 @@ bool TreeOrg::read(const std::string& filename) {
 
 void TreeOrg::write(const std::string& filename) {
 	std::ofstream out(filename);
-	// TODO- write stuff and things
+// TODO- write stuff and things to file
 }
 
 void TreeOrg::hire(TREENODEPTR parentNode, const std::string& newTitle, const std::string& newName) {
