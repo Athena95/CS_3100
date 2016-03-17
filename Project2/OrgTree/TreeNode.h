@@ -15,6 +15,12 @@ public:
 		setPointers(TREENULLPTR, TREENULLPTR, TREENULLPTR);
 	}
 
+	void remove() {
+		name_ = "";
+		title_ = "";
+		setPointers(TREENULLPTR, TREENULLPTR, TREENULLPTR);
+	}
+
 	void operator=(const TreeNode& other) {
 		name_ = other.name_;
 		title_ = other.title_;
