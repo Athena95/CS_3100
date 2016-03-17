@@ -196,3 +196,15 @@ TREENODEPTR TreeOrg::findChild(TREENODEPTR node, TREENODEPTR targetnode) {
 		return findChild(tree_[node].rightSibling_, targetnode);
 	}
 }
+
+void TreeOrg::promoteChildren(TREENODEPTR parent, TREENODEPTR newParent, TREENODEPTR currentChild) {
+
+	tree_[currentChild].parent_ = newParent;
+
+	if (currentChild == TREENULLPTR) {
+		return;
+	}
+	else {
+		return promoteChildren(parent, newParent, tree_[currentChild].rightSibling_);
+	}
+}

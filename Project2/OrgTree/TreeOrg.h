@@ -30,4 +30,5 @@ private:
 
 	TreeNode* resize();
 	TREENODEPTR findChild(TREENODEPTR node, TREENODEPTR targetnode);
+	void promoteChildren(TREENODEPTR parent, TREENODEPTR newParent, TREENODEPTR endChild);
 };
