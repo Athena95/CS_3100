@@ -52,35 +52,33 @@ bool TreeOrg::read(const std::string& filename) {
 	std::string data;
 	bool endSubtree = false;
 
-	while(std::getline(in, data)) {
+	TREENODEPTR tempParent = 0;
+
+	if (!in) {
+		std::cerr << "Cannot open file" << std::endl;
+		return false;
+	}
+
+	while (std::getline(in, data)) {
 		std::string title, name;
 		std::istringstream ss(data);
 		getline(ss, title, ',');
 		getline(ss, name);
 
-		if (title != ")") {
-			if (endSubtree) {
-				getline(ss, title, ',');
-				getline(ss, name);
-
-				hire(tree_[size_ - 1].parent_, title, name);
-				endSubtree = false;
+		if (title == ")") {
+			tempParent = tree_[tempParent].parent_;
+		}
+		else {
+			if (size_ == 0) {
+				addRoot(title, name);
 			}
 			else {
-				hire(size_ - 1, title, name);
+				hire(tempParent, title, name);
+				tempParent = size_ - 1;
 			}
-		}
-		else if (title == ")") {
-			if (size_ != 0) {
-				endSubtree = true;
-			}
-		}
-		else if (size_ == 0) {
-			addRoot(title, name);
 		}
 	}
-	
-	return false;
+	return true;
 }
 
 void TreeOrg::write(const std::string& filename) {
