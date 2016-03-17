@@ -124,16 +124,49 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 	
 	for (size_t i = 0; i < size_; ++i) {
 		if (tree_[i].title_ == formerTitle) {
-			
-			// Get child before the guy we're firing
-			// Set his right sibling to the guy we're firing's right sibling
-			TREENODEPTR childBeforeNode = findChild(tree_[tree_[i].parent_].leftmostChild_, i);
-			tree_[childBeforeNode].rightSibling_ = tree_[i].rightSibling_;
 
-			// TODO
-			// Set left child of deleted guy to last child of his parent
-			// Set all children's parents to guy's parent
+			if (tree_[i].leftmostChild_ != TREENULLPTR) {
+				// Rightmost child-bro should point to leftmost child
+				TREENODEPTR lastChild = findChild(tree_[tree_[i].parent_].leftmostChild_, TREENULLPTR);
+				tree_[lastChild].rightSibling_ = tree_[i].leftmostChild_;
 
+				// Promote Children
+				promoteChildren(i, tree_[i].parent_, tree_[i].leftmostChild_);
+			}
+
+			if (tree_[i].rightSibling_ != TREENULLPTR && tree_[tree_[i].parent_].leftmostChild_ != i) {
+				// Get child before the guy we're firing
+				// Set his right sibling to the guy we're firing's right sibling
+				TREENODEPTR childBeforeNode = findChild(tree_[tree_[i].parent_].leftmostChild_, i);
+				tree_[childBeforeNode].rightSibling_ = tree_[i].rightSibling_;
+			}
+			else if (tree_[tree_[i].parent_].leftmostChild_ == i) {
+				tree_[tree_[i].parent_].leftmostChild_ = tree_[i].rightSibling_;
+			}
+
+			tree_[i].remove();	// "Destructor" for Node
+
+			// If we didn't just delete the last node,
+			// put last node in array into deleted spot
+			if (!tree_[size_ - 1].isEmpty()) {
+
+				// move last node
+				tree_[i] = tree_[size_ - 1];
+
+				// point children to new position
+				promoteChildren(size_ - 1, i, tree_[size_ - 1].leftmostChild_);
+
+				// anything that points to the last node
+				// will now point to its new position
+				for (size_t j = 0; j < size_; ++j) {
+					if (tree_[j].rightSibling_ == size_ - 1) {
+						tree_[j].rightSibling_ = i;
+					}
+					if (tree_[j].leftmostChild_ == size_ - 1) {
+						tree_[j].leftmostChild_ = i;
+					}
+				}
+			}
 			--size_;
 			return true;
 		}
