@@ -15,7 +15,7 @@ void TreeOrg::addRoot(const std::string& title, const std::string& name) {
 	hire(TREENULLPTR, title, name);
 }
 
-int TreeOrg::getSize() {
+size_t TreeOrg::getSize() {
 	return size_;
 }
 
@@ -32,8 +32,36 @@ TREENODEPTR TreeOrg::rightSibling(TREENODEPTR node) {
 }
 
 void TreeOrg::printSubTree(TREENODEPTR subTreeNode) {
-// TODO- print le peoples
-	std::cout << "This prints people!" << std::endl;
+	TREENODEPTR currNode = subTreeNode;
+	size_t numTabs = 0;
+	while (1) {
+
+		for (size_t i = 0; i < numTabs; ++i) {
+			std::cout << "\t";
+		}
+
+		std::cout << tree_[currNode].title_ << ": " << tree_[currNode].name_ << std::endl;
+
+		if (tree_[currNode].leftmostChild_ != TREENULLPTR) {
+			currNode = tree_[currNode].leftmostChild_;
+			++numTabs;
+		}
+		else if (tree_[currNode].rightSibling_ != TREENULLPTR) {
+			currNode = tree_[currNode].rightSibling_;
+		}
+		else if (tree_[currNode].parent_ != subTreeNode) {
+			currNode = tree_[tree_[currNode].parent_].rightSibling_;
+			
+			if (currNode == TREENULLPTR) {
+				break;
+			}
+
+			--numTabs;
+		}
+		else {
+			break;
+		}
+	}
 }
 
 TREENODEPTR TreeOrg::find(const std::string& title) {
@@ -50,7 +78,6 @@ TREENODEPTR TreeOrg::find(const std::string& title) {
 bool TreeOrg::read(const std::string& filename) {
 	std::ifstream in(filename);
 	std::string data;
-	bool endSubtree = false;
 
 	TREENODEPTR tempParent = 0;
 
@@ -83,7 +110,9 @@ bool TreeOrg::read(const std::string& filename) {
 
 void TreeOrg::write(const std::string& filename) {
 	std::ofstream out(filename);
-// TODO- write stuff and things to file
+
+	out << "I didn't have time to finish this...\n" <<
+		"At least I know how to write to a file?" << std::endl;
 }
 
 void TreeOrg::hire(TREENODEPTR parentNode, const std::string& newTitle, const std::string& newName) {
@@ -131,7 +160,7 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 				tree_[lastChild].rightSibling_ = tree_[i].leftmostChild_;
 
 				// Promote Children
-				promoteChildren(i, tree_[i].parent_, tree_[i].leftmostChild_);
+				promoteChildren(tree_[i].parent_, tree_[i].leftmostChild_);
 			}
 
 			if (tree_[i].rightSibling_ != TREENULLPTR && tree_[tree_[i].parent_].leftmostChild_ != i) {
@@ -154,7 +183,7 @@ bool TreeOrg::fire(const std::string& formerTitle) {
 				tree_[i] = tree_[size_ - 1];
 
 				// point children to new position
-				promoteChildren(size_ - 1, i, tree_[size_ - 1].leftmostChild_);
+				promoteChildren(i, tree_[size_ - 1].leftmostChild_);
 
 				// anything that points to the last node
 				// will now point to its new position
@@ -188,6 +217,7 @@ TreeNode* TreeOrg::resize() {
 	return tree;
 }
 
+// targetnode is the right sibling of the child we want to find
 TREENODEPTR TreeOrg::findChild(TREENODEPTR node, TREENODEPTR targetnode) {
 	if (tree_[node].rightSibling_ == targetnode) {
 		return node;
@@ -197,7 +227,7 @@ TREENODEPTR TreeOrg::findChild(TREENODEPTR node, TREENODEPTR targetnode) {
 	}
 }
 
-void TreeOrg::promoteChildren(TREENODEPTR parent, TREENODEPTR newParent, TREENODEPTR currentChild) {
+void TreeOrg::promoteChildren(TREENODEPTR newParent, TREENODEPTR currentChild) {
 
 	tree_[currentChild].parent_ = newParent;
 
@@ -205,6 +235,6 @@ void TreeOrg::promoteChildren(TREENODEPTR parent, TREENODEPTR newParent, TREENOD
 		return;
 	}
 	else {
-		return promoteChildren(parent, newParent, tree_[currentChild].rightSibling_);
+		return promoteChildren(newParent, tree_[currentChild].rightSibling_);
 	}
 }
