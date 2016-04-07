@@ -80,7 +80,7 @@ bool AVLTree::find(Node& currNode, const int key, const int value) {
 std::vector<int> AVLTree::findRange(const int lowkey, const int highkey) {
 	std::vector<int> keys;
 	for (auto it = tree_.begin(); it != tree_.end(); ++it) {
-		if (it->data_.key_ <= lowkey && it->data_.key_ >= highkey) {
+		if (it->data_.key_ >= lowkey && it->data_.key_ <= highkey) {
 			keys.push_back(it->data_.key_);
 			keys.push_back(it->data_.value_);
 		}
