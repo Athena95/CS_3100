@@ -6,10 +6,11 @@ AVLTree::AVLTree() : height_(0), root_(INVALID_NODE) {}
 
 bool AVLTree::insert(const int key, const int value) {
 	Node node(key, value);
+	node.position_ = tree_.size();
 	tree_.push_back(node);
 
 	if (root_ == INVALID_NODE) {
-		root_ = tree_.size() - 1;
+		root_ = node.position_;
 		return true;
 	}
 	else {
@@ -17,6 +18,9 @@ bool AVLTree::insert(const int key, const int value) {
 			tree_.pop_back();
 			return false;
 		}
+
+		std::cout << "Node in position: " << node.position_ << std::endl;
+		std::cout << "\tParent: " << node.parent_ << "\n" << std::endl;
 		return true;
 	}
 }
@@ -67,23 +71,23 @@ std::vector<int> AVLTree::findRange(const int lowkey, const int highkey) {
 }
 
 bool AVLTree::insertNode(Node& node, Node& currNode) {
-	if (currNode.data_.value_ == node.data_.value_) {
+	if (currNode.data_.key_ == node.data_.key_) {
 		return false;
 	}
-	else if (currNode.data_.value_ > node.data_.value_) {
-		if (currNode.leftChild_ == NULL) {
-			currNode.leftChild_ = tree_.size() - 1;
-			node.parent_ = tree_[currNode.parent_].leftChild_;
+	else if (currNode.data_.key_ > node.data_.key_) {
+		if (currNode.leftChild_ == INVALID_NODE) {
+			currNode.leftChild_ = node.position_;
+			node.parent_ = currNode.position_;
 			return true;
 		}
 		else {
 			return insertNode(node, tree_[currNode.leftChild_]);
 		}
 	}
-	else if (currNode.data_.value_ < node.data_.value_) {
-		if(currNode.rightChild_ == NULL) {
-			currNode.rightChild_ = tree_.size() - 1;
-			node.parent_ = tree_[currNode.parent_].rightChild_;
+	else if (currNode.data_.key_ < node.data_.key_) {
+		if(currNode.rightChild_ == INVALID_NODE) {
+			currNode.rightChild_ = node.position_;
+			node.parent_ = currNode.position_;
 			return true;
 		}
 		else {
