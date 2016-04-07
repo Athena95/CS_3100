@@ -53,15 +53,28 @@ void AVLTree::print(const size_t node, size_t numTabs) {
 }
 
 bool AVLTree::find(const int key, const int value) {
-	for (auto it = tree_.begin(); it != tree_.end(); ++it) {
-		if (it->data_.key_ == key) {
-			it->data_.value_ = value;
-			return true;
-		}
+	if (!find(tree_[root_], key, value)) {
+		std::cerr << "Unable to change value- key not found in the map" << std::endl;
+		return false;
 	}
+	return true;
+}
 
-	std::cerr << "Unable to add value- key not found in the map" << std::endl;
-	return false;
+bool AVLTree::find(Node& currNode, const int key, const int value) {
+	if (currNode.data_.key_ == key) {
+		currNode.data_.value_ = value;
+		return true;
+	}
+	else if (key > currNode.data_.key_) {
+		find(tree_[currNode.rightChild_], key, value);
+	}
+	else if (key < currNode.data_.key_) {
+		find(tree_[currNode.leftChild_], key, value);
+	}
+	else {
+		std::cout << "WTF IS GOING OOOOOOOOOOOOOOOOOOON?" << std::endl;
+		return false;
+	}
 }
 
 std::vector<int> AVLTree::findRange(const int lowkey, const int highkey) {
