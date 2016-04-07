@@ -2,6 +2,7 @@
 #include <limits>
 
 static const int INVALID_NUM = std::numeric_limits<int>::max();
+static const size_t INVALID_NODE = std::numeric_limits<size_t>::max();
 
 
 // Struct that contains the data pair
@@ -15,13 +16,13 @@ class Node {
 public:
 
 	// Empty Constructor
-	Node() : data_(INVALID_NUM, INVALID_NUM) {
-		setPointers(NULL, NULL, NULL);
+	Node() : data_(INVALID_NUM, INVALID_NUM), position_( INVALID_NODE ) {
+		setPointers(INVALID_NODE, INVALID_NODE, INVALID_NODE);
 	}
 
 	// Parameterized Constructor
 	Node(const int key, const int value) : data_(key,value) {
-		setPointers(NULL, NULL, NULL);
+		setPointers(INVALID_NODE, INVALID_NODE, INVALID_NODE);
 	}
 
 	void setPointers(size_t p, size_t lc, size_t rs) {
@@ -38,10 +39,10 @@ public:
 	void clear() {
 		data_.key_ = INVALID_NUM;
 		data_.value_ = INVALID_NUM;
-		setPointers(NULL, NULL, NULL);
+		setPointers(INVALID_NODE, INVALID_NODE, INVALID_NODE);
 	}
 
 	// Public Members
 	DataPair data_;
-	size_t parent_, leftChild_, rightChild_;
+	size_t parent_, leftChild_, rightChild_, position_;
 };

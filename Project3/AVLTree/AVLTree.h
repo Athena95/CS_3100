@@ -3,8 +3,6 @@
 #include <vector>
 #include <limits>
 
-static const size_t INVALID_NODE = std::numeric_limits<size_t>::max();
-
 class AVLTree {
 public:
 
