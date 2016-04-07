@@ -20,5 +20,6 @@ private:
 	size_t height_, root_;
 
 	bool insertNode(Node& node, Node& currNode);
-	void print(const size_t node);
+	void print(const size_t node, const size_t numTabs);
+	bool find(Node& currNode, const int key, const int value);
 };

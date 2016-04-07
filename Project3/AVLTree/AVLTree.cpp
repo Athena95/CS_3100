@@ -34,17 +34,22 @@ size_t AVLTree::getSize() {
 }
 
 void AVLTree::print() {
-	print(root_);
+	print(root_, 0);
 }
 
-void AVLTree::print(const size_t node) {
+void AVLTree::print(const size_t node, size_t numTabs) {
 	if (node == INVALID_NODE) {
 		return;
 	}
 	
-	print(tree_[node].rightChild_);
+	print(tree_[node].rightChild_, ++numTabs);
+
+	for (size_t i = 0; i <= numTabs; ++i) {
+		std::cout << "\t";
+	}
+
 	std::cout << tree_[node].data_.key_ << ", " << tree_[node].data_.value_ << std::endl;
-	print(tree_[node].leftChild_);
+	print(tree_[node].leftChild_, ++numTabs);
 }
 
 bool AVLTree::find(const int key, const int value) {
