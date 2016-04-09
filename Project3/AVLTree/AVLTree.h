@@ -25,5 +25,6 @@ private:
 	bool insertNode(Node& node, Node& currNode);
 	void print(const size_t node, const size_t numTabs);
 	bool find(Node& currNode, const int key, int& value);
+	size_t findHeight(const Node& node, size_t currHeight);
 	void resize(const size_t newCapacity);
 };

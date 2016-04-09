@@ -32,7 +32,28 @@ bool AVLTree::insert(const int key, const int value) {
 }
 
 size_t AVLTree::getHeight() {
-	return height_;
+	if (size_ == 0) {
+		return 0;
+	}
+	else {
+		return findHeight(tree_[root_], 0);
+	}
+}
+
+size_t AVLTree::findHeight(const Node& node, size_t currHeight) {
+	if (node.leftChild_ == INVALID_NODE && node.rightChild_ == INVALID_NODE) {
+		return ++currHeight;
+	}
+	else if (node.leftChild_ == INVALID_NODE) {
+		return findHeight(tree_[node.rightChild_], ++currHeight);
+	}
+	else if (node.rightChild_ == INVALID_NODE) {
+		return findHeight(tree_[node.leftChild_], ++currHeight);
+	}
+	else {
+		return std::max(findHeight(tree_[node.leftChild_], ++currHeight), 
+			findHeight(tree_[node.rightChild_], ++currHeight));
+	}
 }
 
 size_t AVLTree::getSize() {
