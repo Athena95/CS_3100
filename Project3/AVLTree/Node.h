@@ -31,11 +31,6 @@ public:
 		rightChild_ = rs;
 	}
 
-	// Overloaded = operator
-	bool operator=(const Node& other) {
-		return data_.key_ == other.data_.key_;
-	}
-
 	void clear() {
 		data_.key_ = INVALID_NUM;
 		data_.value_ = INVALID_NUM;
