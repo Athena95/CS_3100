@@ -1,5 +1,6 @@
 #include "AVLTree.h"
 #include <iostream>
+#include <algorithm>
 #include <string>	
 
 const size_t AVLTree::DEFAULT_CAPACITY = 50;
@@ -11,22 +12,32 @@ AVLTree::AVLTree() : root_(INVALID_NODE), size_(0), capacity_(DEFAULT_CAPACITY) 
 }
 
 bool AVLTree::insert(const int key, const int value) {
+
+	if (duplicate(key) && size_ != 0) {
+		std::cerr << "Key already in map" << std::endl;
+		return false;
+	}
+
 	Node node(key, value);
-	node.position_ = tree_.size();
-	tree_.push_back(node);
+	node.position_ = size_;
+	++size_;
+
+	if (size_ == capacity_) {
+		resize(capacity_ * 2);
+	}
 
 	if (root_ == INVALID_NODE) {
+		tree_[0] = node;
 		root_ = node.position_;
 		return true;
 	}
 	else {
 		if (!insertNode(node, tree_[root_])) {
-			tree_.pop_back();
 			return false;
 		}
 
-		std::cout << "Node in position: " << node.position_ << std::endl;
-		std::cout << "\tParent: " << node.parent_ << "\n" << std::endl;
+		std::cout << "Node in position: " << tree_[node.position_].position_ << std::endl;
+		std::cout << "\tParent: " << tree_[node.position_].parent_ << "\n" << std::endl;
 		return true;
 	}
 }
@@ -120,8 +131,7 @@ bool AVLTree::insertNode(Node& node, Node& currNode) {
 	}
 	else if (currNode.data_.key_ > node.data_.key_) {
 		if (currNode.leftChild_ == INVALID_NODE) {
-			currNode.leftChild_ = node.position_;
-			node.parent_ = currNode.position_;
+			add(node, currNode, LEFT);
 			return true;
 		}
 		else {
@@ -130,8 +140,7 @@ bool AVLTree::insertNode(Node& node, Node& currNode) {
 	}
 	else if (currNode.data_.key_ < node.data_.key_) {
 		if(currNode.rightChild_ == INVALID_NODE) {
-			currNode.rightChild_ = node.position_;
-			node.parent_ = currNode.position_;
+			add(node, currNode, RIGHT);
 			return true;
 		}
 		else {
@@ -139,6 +148,20 @@ bool AVLTree::insertNode(Node& node, Node& currNode) {
 		}
 	}
 	return false;
+}
+
+void AVLTree::add(Node& newNode, Node& parent, const std::string& whichChild) {
+	tree_[newNode.position_] = newNode;
+	if (whichChild == RIGHT) {
+		parent.rightChild_ = newNode.position_;
+	}
+	else if (whichChild == LEFT) {
+		parent.leftChild_ = newNode.position_;
+	}
+	else {
+		std::cerr << "Luke, I am not your father" << std::endl;
+	}
+	tree_[newNode.position_].parent_ = parent.position_;
 }
 
 void AVLTree::resize(const size_t newCapacity) {
