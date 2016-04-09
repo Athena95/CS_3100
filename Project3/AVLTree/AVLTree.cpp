@@ -60,19 +60,18 @@ bool AVLTree::find(const int key, const int value) {
 	return true;
 }
 
-bool AVLTree::find(Node& currNode, const int key, const int value) {
+bool AVLTree::find(Node& currNode, const int key, int& value) {
 	if (currNode.data_.key_ == key) {
-		currNode.data_.value_ = value;
+		value = currNode.data_.value_;
 		return true;
 	}
-	else if (key > currNode.data_.key_) {
+	else if (key > currNode.data_.key_ && currNode.rightChild_ != INVALID_NODE) {
 		find(tree_[currNode.rightChild_], key, value);
 	}
-	else if (key < currNode.data_.key_) {
+	else if (key < currNode.data_.key_ && currNode.leftChild_ != INVALID_NODE) {
 		find(tree_[currNode.leftChild_], key, value);
 	}
 	else {
-		std::cout << "WTF IS GOING OOOOOOOOOOOOOOOOOOON?" << std::endl;
 		return false;
 	}
 }

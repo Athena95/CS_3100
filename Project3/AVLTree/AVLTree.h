@@ -12,7 +12,7 @@ public:
 	size_t getSize();
 	void print();
 
-	bool find(const int key, const int value);
+	bool find(const int key, int& value);
 	std::vector<int> findRange(const int lowkey, const int highkey);
 
 private:
@@ -21,5 +21,5 @@ private:
 
 	bool insertNode(Node& node, Node& currNode);
 	void print(const size_t node, const size_t numTabs);
-	bool find(Node& currNode, const int key, const int value);
+	bool find(Node& currNode, const int key, int& value);
 };
