@@ -2,7 +2,10 @@
 #include <iostream>
 #include <string>	
 
-AVLTree::AVLTree() : height_(0), root_(INVALID_NODE) {}
+
+AVLTree::AVLTree() : root_(INVALID_NODE), size_(0), capacity_(DEFAULT_CAPACITY) {
+	tree_ = new Node[capacity_];
+}
 
 bool AVLTree::insert(const int key, const int value) {
 	Node node(key, value);
@@ -30,7 +33,7 @@ size_t AVLTree::getHeight() {
 }
 
 size_t AVLTree::getSize() {
-	return tree_.size();
+	return size_;
 }
 
 void AVLTree::print() {
@@ -78,10 +81,10 @@ bool AVLTree::find(Node& currNode, const int key, int& value) {
 
 std::vector<int> AVLTree::findRange(const int lowkey, const int highkey) {
 	std::vector<int> keys;
-	for (auto it = tree_.begin(); it != tree_.end(); ++it) {
-		if (it->data_.key_ >= lowkey && it->data_.key_ <= highkey) {
-			keys.push_back(it->data_.key_);
-			keys.push_back(it->data_.value_);
+	for (size_t i = 0; i < size_; ++i) {
+		if (tree_[i].data_.key_ >= lowkey && tree_[i].data_.key_ <= highkey) {
+			keys.push_back(tree_[i].data_.key_);
+			keys.push_back(tree_[i].data_.value_);
 		}
 	}
 	return keys;
@@ -113,3 +116,17 @@ bool AVLTree::insertNode(Node& node, Node& currNode) {
 	}
 	return false;
 }
+
+void AVLTree::resize(const size_t newCapacity) {
+	capacity_ = newCapacity;					// Set capacity to the new capacity
+	Node* newTree_ = new Node[capacity_];		// Create new tree with given capacity
+
+	// Copy over elements
+	for (size_t i = 0; i < size_; ++i) {
+		newTree_[i] = tree_[i];
+	}
+
+	delete[] tree_;					// Delete old tree
+	this->tree_ = newTree_;			// Set new tree to our tree
+}
+
