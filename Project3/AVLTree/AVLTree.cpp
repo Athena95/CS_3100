@@ -82,7 +82,7 @@ void AVLTree::print(const size_t node, size_t numTabs) {
 	
 	print(tree_[node].rightChild_, ++numTabs);
 
-	for (size_t i = 0; i <= numTabs; ++i) {
+	for (size_t i = 0; i < numTabs; ++i) {
 		std::cout << "\t";
 	}
 
@@ -90,9 +90,9 @@ void AVLTree::print(const size_t node, size_t numTabs) {
 	print(tree_[node].leftChild_, ++numTabs);
 }
 
-bool AVLTree::find(const int key, const int value) {
+bool AVLTree::find(const int key, int& value) {
 	if (!find(tree_[root_], key, value)) {
-		std::cerr << "Unable to change value- key not found in the map" << std::endl;
+		std::cerr << "Unable to find " << key << " in the map!" << std::endl;
 		return false;
 	}
 	return true;
@@ -177,3 +177,11 @@ void AVLTree::resize(const size_t newCapacity) {
 	this->tree_ = newTree_;			// Set new tree to our tree
 }
 
+bool AVLTree::duplicate(const int key) {
+	for (size_t i = 0; i < size_; ++i) {
+		if (tree_[i].data_.key_ == key) {
+			return true;
+		}
+	}
+	return false;
+}
