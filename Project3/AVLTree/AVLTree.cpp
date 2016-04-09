@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>	
 
+const size_t AVLTree::DEFAULT_CAPACITY = 50;
+const std::string AVLTree::LEFT = "LEFT";
+const std::string AVLTree::RIGHT = "RIGHT";
 
 AVLTree::AVLTree() : root_(INVALID_NODE), size_(0), capacity_(DEFAULT_CAPACITY) {
 	tree_ = new Node[capacity_];

@@ -19,6 +19,9 @@ private:
 	Node* tree_;
 	size_t root_, size_, capacity_;
 
+	static const size_t DEFAULT_CAPACITY;
+	static const std::string LEFT, RIGHT;
+
 	bool insertNode(Node& node, Node& currNode);
 	void print(const size_t node, const size_t numTabs);
 	bool find(Node& currNode, const int key, int& value);
