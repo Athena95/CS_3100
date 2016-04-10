@@ -11,6 +11,10 @@ AVLTree::AVLTree() : root_(INVALID_NODE), size_(0), capacity_(DEFAULT_CAPACITY) 
 	tree_ = new Node[capacity_];
 }
 
+AVLTree::~AVLTree() {
+	delete[] tree_;
+}
+
 bool AVLTree::insert(const int key, const int value) {
 
 	if (duplicate(key) && size_ != 0) {
